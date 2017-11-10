@@ -2,7 +2,7 @@
 
 import logging
 
-from twisted.internet.defer import maybeDeferred, DeferredList, Deferred
+from twisted.internet.defer import maybeDeferred, DeferredList, Deferred, FirstError
 from twisted.python.failure import Failure
 
 from pydispatch.dispatcher import Any, Anonymous, liveReceivers, \
@@ -86,6 +86,10 @@ def send_deferred(signal=Any, sender=Anonymous, *arguments, **named):
         d.addCallback(lambda result: (receiver, result))
         dfds.append(d)
     d = DeferredList(dfds, consumeErrors=True, fireOnOneErrback=True)
+    def unwrap_firsterror(err):
+        failure = err.trap(FirstError)
+        return err.value.subFailure
+    d.addErrback(unwrap_firsterror)
     d.addCallback(lambda out: [x[1] for x in out])
     return d
 
