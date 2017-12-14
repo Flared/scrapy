@@ -189,10 +189,10 @@ class Scraper(object):
         elif output is None:
             pass
         else:
-            typename = type(output).__name__
+            #typename = type(output).__name__
             logger.error('Spider must return Request, BaseItem, dict or None, '
-                         'got %(typename)r in %(request)s',
-                         {'request': request, 'typename': typename},
+                         'got %(output)r in %(request)s',
+                         {'request': request, 'output': output},
                          extra={'spider': spider})
 
     def _log_download_errors(self, spider_failure, download_failure, request, spider):

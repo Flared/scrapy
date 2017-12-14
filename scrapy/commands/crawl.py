@@ -1,3 +1,4 @@
+import logging
 import os
 from scrapy.commands import ScrapyCommand
 from scrapy.utils.conf import arglist_to_dict
@@ -54,5 +55,9 @@ class Command(ScrapyCommand):
             raise UsageError("running 'scrapy crawl' with more than one spider is no longer supported")
         spname = args[0]
 
-        self.crawler_process.crawl(spname, **opts.spargs)
+        def handle_crawl_error(failure):
+            error = failure.value
+            logging.error('Failed to start crawling', exc_info=error)
+
+        self.crawler_process.crawl(spname, **opts.spargs).addErrback(handle_crawl_error)
         self.crawler_process.start()
