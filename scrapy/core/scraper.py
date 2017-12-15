@@ -212,9 +212,11 @@ class Scraper(object):
                     logger.error('Error downloading %(request)s: %(errmsg)s',
                                  {'request': request, 'errmsg': errmsg},
                                  extra={'spider': spider})
-            return self.signals.send_catch_log_deferred(
+            signal_deffered = self.signals.send_catch_log_deferred(
                 signal=signals.download_error, request=request,
                 spider=spider, failure=download_failure)
+            signal_deffered.addBoth(lambda outs: None)
+            return signal_deffered
 
         if spider_failure is not download_failure:
             return spider_failure
