@@ -58,7 +58,7 @@ class Slot(object):
         )
 
 
-def _get_concurrency_delay(concurrency, spider, settings):
+def _get_concurrency_delay(concurrency, request, spider, settings):
     delay = settings.getfloat('DOWNLOAD_DELAY')
     if hasattr(spider, 'DOWNLOAD_DELAY'):
         warnings.warn("%s.DOWNLOAD_DELAY attribute is deprecated, use %s.download_delay instead" %
@@ -69,6 +69,9 @@ def _get_concurrency_delay(concurrency, spider, settings):
 
     if hasattr(spider, 'max_concurrent_requests'):
         concurrency = spider.max_concurrent_requests
+
+    delay = request.meta.get('slot_download_delay', delay)
+    concurrency = request.meta.get('slot_concurrency', concurrency)
 
     return concurrency, delay
 
@@ -105,7 +108,7 @@ class Downloader(object):
         key = self._get_slot_key(request, spider)
         if key not in self.slots:
             conc = self.ip_concurrency if self.ip_concurrency else self.domain_concurrency
-            conc, delay = _get_concurrency_delay(conc, spider, self.settings)
+            conc, delay = _get_concurrency_delay(conc, request, spider, self.settings)
             self.slots[key] = Slot(conc, delay, self.randomize_delay)
 
         return key, self.slots[key]
