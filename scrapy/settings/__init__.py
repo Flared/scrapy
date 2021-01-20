@@ -2,7 +2,7 @@ import six
 import json
 import copy
 import warnings
-from collections import MutableMapping
+from collections.abc import MutableMapping
 from importlib import import_module
 from pprint import pformat
 
