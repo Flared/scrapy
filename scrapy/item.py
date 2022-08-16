@@ -5,7 +5,7 @@ See documentation in docs/topics/item.rst
 """
 
 from pprint import pformat
-from collections import MutableMapping
+from collections.abc import MutableMapping
 
 from abc import ABCMeta
 import six

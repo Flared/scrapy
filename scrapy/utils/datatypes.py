@@ -8,7 +8,8 @@ This module must not depend on any module outside the Standard Library.
 import copy
 import six
 import warnings
-from collections import OrderedDict, Mapping
+from collections import OrderedDict
+from collections.abc import Mapping
 
 from scrapy.exceptions import ScrapyDeprecationWarning
 

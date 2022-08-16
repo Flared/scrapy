@@ -1,6 +1,6 @@
 import copy
 import unittest
-from collections import Mapping, MutableMapping
+from collections.abc import Mapping, MutableMapping
 
 from scrapy.utils.datatypes import CaselessDict, SequenceExclude
 
