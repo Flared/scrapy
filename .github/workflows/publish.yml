@@ -14,7 +14,7 @@ jobs:
     - run: pip install pip==22.1.2 wheel==0.37.1 build==0.8.0
     - run: python -m build --wheel
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: ${{ secrets.AWS_GITHUB_WORKFLOWS_ROLE_ARN }}
         aws-region: us-east-1
