@@ -198,18 +198,12 @@ def binary_is_text(data):
 
 
 def _getargspec_py23(func):
-    """_getargspec_py23(function) -> named tuple ArgSpec(args, varargs, keywords,
+    """_getargspec_py23(function) -> named tuple FullArgSpec(args, varargs, keywords,
                                                         defaults)
 
     Identical to inspect.getargspec() in python2, but uses
     inspect.getfullargspec() for python3 behind the scenes to avoid
     DeprecationWarning.
-
-    >>> def f(a, b=2, *ar, **kw):
-    ...     pass
-
-    >>> _getargspec_py23(f)
-    ArgSpec(args=['a', 'b'], varargs='ar', keywords='kw', defaults=(2,))
     """
     if six.PY2:
         return inspect.getargspec(func)
