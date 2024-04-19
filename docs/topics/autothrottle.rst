@@ -11,7 +11,7 @@ Design goals
 ============
 
 1. be nicer to sites instead of using default download delay of zero
-2. automatically adjust scrapy to the optimum crawling speed, so the user
+2. automatically adjust Scrapy to the optimum crawling speed, so the user
    doesn't have to tune the download delays to find the optimum one.
    The user only needs to specify the maximum concurrent requests
    it allows, and the extension does the rest.
@@ -46,6 +46,18 @@ effect, but there are some important differences:
   the high request rate.
 
 AutoThrottle doesn't have these issues.
+
+Disabling throttling on a downloader slot
+=========================================
+
+It is possible to disable AutoThrottle for a specific download slot at run time
+by setting its ``throttle`` attribute to ``False``, e.g. using
+:setting:`DOWNLOAD_SLOTS`.
+
+Note, however, that AutoThrottle still determines the starting delay of every
+slot by setting the ``download_delay`` attribute on the running spider. You
+might want to set a custom value for the ``delay`` attribute of the slot, e.g.
+using :setting:`DOWNLOAD_SLOTS`.
 
 Throttling algorithm
 ====================
@@ -128,12 +140,10 @@ The maximum download delay (in seconds) to be set in case of high latencies.
 AUTOTHROTTLE_TARGET_CONCURRENCY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. versionadded:: 1.1
-
 Default: ``1.0``
 
 Average number of requests Scrapy should be sending in parallel to remote
-websites.
+websites. It must be higher than ``0.0``.
 
 By default, AutoThrottle adjusts the delay to send a single
 concurrent request to each of the remote websites. Set this option to
