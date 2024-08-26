@@ -26,9 +26,8 @@ _baseurl_cache: WeakKeyDictionary[Response, str] = WeakKeyDictionary()
 def get_base_url(response: TextResponse) -> str:
     """Return the base url of the given response, joined with the response url"""
     if response not in _baseurl_cache:
-        text = response.text[0:4096]
         _baseurl_cache[response] = html.get_base_url(
-            text, response.url, response.encoding
+            response.text, response.url, response.encoding
         )
     return _baseurl_cache[response]
 

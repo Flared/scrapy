@@ -91,6 +91,17 @@ class ResponseUtilsTest(unittest.TestCase):
         )
         self.assertEqual(get_base_url(resp2), "http://www.example.com")
 
+    def test_get_base_url_with_long_head(self):
+        resp = HtmlResponse(
+            "http://www.example.com",
+            body=f"""
+        <html>
+        <head>{'A' * 5000}<base href="http://www.example.com/img/" target="_blank"></head>
+        <body>blahablsdfsal&amp;</body>
+        </html>""".encode(),
+        )
+        self.assertEqual(get_base_url(resp), "http://www.example.com/img/")
+
     def test_response_status_message(self):
         self.assertEqual(response_status_message(200), "200 OK")
         self.assertEqual(response_status_message(404), "404 Not Found")
